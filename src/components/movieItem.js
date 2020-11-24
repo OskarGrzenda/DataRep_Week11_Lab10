@@ -1,7 +1,32 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
+import {Link} from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
+import axios from 'axios';
+import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
 
 export class MovieItem extends React.Component {
+   
+    constructor()
+    {
+        super();
+
+        this.DeleteMovie = this.DeleteMovie.bind(this);
+    }
+
+    //logs ID to console
+    DeleteMovie(e)
+    {
+        e.preventDefault();
+        console.log("Delete: " + this.props.movie._id);
+        //passes up ID and server deletes movie from database
+        axios.delete("http://localhost:4000/api/movies/" + this.props.movie._id)
+        .then(()=>{
+            this.props.ReloadData();
+        })
+        .catch();
+    }
+   
     render() {
         return (
             <div>
@@ -16,6 +41,7 @@ export class MovieItem extends React.Component {
                             </footer>
                         </blockquote>
                     </Card.Body>
+                    <Button variant="danger" onClick={this.DeleteMovie}>DELETE</Button>
                 </Card>
 
 

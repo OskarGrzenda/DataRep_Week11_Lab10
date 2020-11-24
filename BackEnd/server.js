@@ -71,6 +71,15 @@ MovieModel.find((err, data)=>{
      })
  })
 
+//deletes movie and sends back data once its deleted
+ app.delete('/api/movies/:id', (req,res) =>{
+     console.log("Delete movie: " + req.params.id);
+
+     MovieModel.findByIdAndDelete(req.params.id,(err, data) =>{
+         res.send(data);
+     })
+ })
+
 //receiving data from application
 app.post('/api/movies', (req, res) => {
     console.log('Movie Received');
