@@ -4,7 +4,7 @@ const port = 4000
 const cors = require('cors');
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
-
+const path = require('path');
 
 app.use(cors());
 app.use(function(req, res, next) {
@@ -14,6 +14,9 @@ app.use(function(req, res, next) {
     "Origin, X-Requested-With, Content-Type, Accept");
     next();
     });
+
+    app.use(express.static(path.join(__dirname, '../build')));
+    app.use('/static', express.static(path.join(__dirname, 'build//static')));
 
 //parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -104,6 +107,10 @@ app.post('/api/movies', (req, res) => {
     })
 
     res.send('Item Added');
+})
+//if you type any other URL this send back index.html
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname+'/../build/index.html'));//joining 2 paths
 })
 
 app.listen(port, () => {
